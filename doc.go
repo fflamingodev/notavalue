@@ -78,7 +78,7 @@
 // The import path spells out what the package is about; a short alias
 // keeps the calls readable:
 //
-//	import nav "usefulrisk.com/notavalue"
+//	import nav "github.com/fflamingodev/notavalue"
 //
 //	x := nav.NaV
 package notavalue

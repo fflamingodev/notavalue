@@ -1,3 +1,3 @@
-module usefulrisk.com/notavalue
+module github.com/fflamingodev/notavalue
 
 go 1.21

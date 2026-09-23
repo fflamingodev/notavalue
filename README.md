@@ -3,10 +3,10 @@
 **A NaN-boxed sentinel for missing data in Go — and the arithmetic that
 keeps computing when a value is not there.**
 
-[![Go Reference](https://pkg.go.dev/badge/usefulrisk.com/notavalue.svg)](https://pkg.go.dev/usefulrisk.com/notavalue)
+[![Go Reference](https://pkg.go.dev/badge/github.com/fflamingodev/notavalue.svg)](https://pkg.go.dev/github.com/fflamingodev/notavalue)
 
 ```go
-import nav "usefulrisk.com/notavalue"
+import nav "github.com/fflamingodev/notavalue"
 
 temperatures := []float64{18.2, 19.1, nav.NaV, 17.8, 18.6} // the sensor was offline
 
@@ -132,15 +132,12 @@ go test -run XXX -bench . -benchmem
 ## Install
 
 ```
-go get usefulrisk.com/notavalue
+go get github.com/fflamingodev/notavalue
 ```
 
-`usefulrisk.com/notavalue` is the import path; the backing repository is
-`github.com/fflamingodev/notavalue`. Import the vanity path, not the
-repository URL.
-
 Requires Go 1.21 or later. The package depends on nothing but the
-standard library.
+standard library, so it adds one line to your `go.mod` and nothing to
+your dependency tree.
 
 ## Status
 
