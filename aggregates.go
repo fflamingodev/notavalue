@@ -49,6 +49,37 @@ var ErrPercentileRange = errors.New("percentile rank must be in (0, 100]")
 // always len(xs). CountNonNaV is the combination of the first and the
 // third.
 
+// Coalesce returns the first entry of xs that is worth using, in the
+// manner of SQL's COALESCE: missing values are passed over until a real
+// number turns up.
+//
+//	Coalesce(NaV, NaV, 5, 7) → 5
+//	Coalesce(NaV, NaV)       → NaV
+//	Coalesce()               → NaV
+//
+// An error is not passed over. A plain NaN met before any usable value
+// is returned as such, because rule 2 applies here as everywhere: a
+// broken computation must not be quietly stepped around to reach the
+// next candidate.
+//
+//	Coalesce(math.NaN(), 5)  → NaN
+//	Coalesce(NaV, math.NaN(), 5) → NaN
+//
+// Use it to pick the first available of several sources — a primary
+// sensor, then its backup, then a modeled value.
+func Coalesce(xs ...float64) float64 {
+	for _, x := range xs {
+		switch {
+		case IsNaV(x):
+			continue
+		case math.IsNaN(x):
+			return math.NaN()
+		}
+		return x
+	}
+	return NaV
+}
+
 // CountUsable returns how many entries of xs are real numbers, that is,
 // neither NaV nor NaN. Use it to judge how much a result is worth: a
 // mean over 3 usable points out of 30 is not the same statement as a

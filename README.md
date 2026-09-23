@@ -80,7 +80,18 @@ nav.Add(math.NaN(), nav.NaV) // NaN    the error wins
 
 **Predicates** — `IsNaV`, `IsStdNaN`
 
-**Arithmetic** — `Add`, `Sub`, `Mul`, `Div`
+**Arithmetic** — `Add`, `Sub`, `Mul`, `Div`. Always go through them:
+what payload a NaN result carries is left to the processor, so a plain
+`NaV - 5` may or may not still be recognizable as a `NaV` depending on
+the machine.
+
+**Selection** — `Coalesce` returns the first usable value, passing over
+the gaps: a primary sensor, then its backup, then a modeled value. It
+does not pass over an error.
+
+**Display** — `Format` prints `"NaV"`, `"NaN"` or the number. `%v`
+cannot: it writes `NaN` for both sentinels, and the distinction you kept
+all the way through vanishes in your logs.
 
 **Inventories**, which never propagate anything because a tally cannot
 break — `CountUsable`, `CountNaV`, `CountNaN`, `CountNonNaV`. The first

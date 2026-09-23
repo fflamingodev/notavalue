@@ -43,6 +43,21 @@ func IsStdNaN(x float64) bool {
 //  2. A NaV is then handled per operation: neutral in Add, missing in
 //     Sub, Mul and Div.
 //
+// # Always go through these functions
+//
+// Plain operators must not be used on values that may be missing. Go and
+// IEEE-754 leave it to the processor to decide what payload a NaN result
+// carries, and processors disagree: on some, NaV - 5 comes out still
+// tagged as a NaV; on others the tag is lost and a default NaN is
+// produced. Either way the semantics of this package no longer hold —
+// NaV - 5 must be NaV because the difference is unknown, not because the
+// hardware happened to copy a bit.
+//
+// The functions below make the outcome a property of the package rather
+// than of the machine it runs on. The same warning applies to the
+// aggregates: sum a []float64 by hand and a NaV will behave however the
+// processor sees fit.
+//
 // The asymmetry between Add and Sub is deliberate. A sum tolerates an
 // absent term, the way a monthly mean tolerates a missing day. A
 // difference compares two values: if one of them is unknown, so is the
